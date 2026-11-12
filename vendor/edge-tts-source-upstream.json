@@ -1,0 +1,203 @@
+{
+  "name": "edge-tts-source",
+  "url": "https://codeload.github.com/andresayac/edge-tts/tar.gz/93f6dbc5905293402ebf4b6dc162d31f7e61136e",
+  "commit": "93f6dbc5905293402ebf4b6dc162d31f7e61136e",
+  "archiveSha256": "d44732b57c182bb87a75b58986cc2059aefbed83554b1d612e70c5e325dbf6c9",
+  "files": [
+    {
+      "path": ".gitignore",
+      "bytes": 2272,
+      "sha256": "402de34e4f82f27cdf2b36b9270b8a521bd1521524f54bf1a51faabfe9636767"
+    },
+    {
+      "path": ".npmignore",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "bytes": 2747,
+      "sha256": "50e940fbdaf256a3873dff58cc3b547a0d79742f506bfe82e17bbe717da56413"
+    },
+    {
+      "path": "examples/browser-demo.html",
+      "bytes": 12043,
+      "sha256": "d878d929f6bc7ea1cdad52d93f4d26353571e048666aa41c98bd35bebb8179be"
+    },
+    {
+      "path": "examples/browser-local-demo.html",
+      "bytes": 1675,
+      "sha256": "3fa7e280f563e5e4585d1fd55642f9be7f5ccbec4c84ed2da0efbf690e16ca0a"
+    },
+    {
+      "path": "examples/browser-standalone.html",
+      "bytes": 18342,
+      "sha256": "024ab512d150fda9b4a342d031dcf37a20ebb71ef617fa766026e916df6bd866"
+    },
+    {
+      "path": "examples/relay-server.mjs",
+      "bytes": 1367,
+      "sha256": "2c805b7e8631f36dac0563e519e59ffeecc6804dd58f324baf8d51e2b43f56c5"
+    },
+    {
+      "path": "examples/test-constructor.html",
+      "bytes": 1930,
+      "sha256": "651f894adaeaa0f02ccb8a1b65b32fdfa17d1f08a4f123f789b9e0492b42f06b"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 35148,
+      "sha256": "8b1ba204bb69a0ade2bfcf65ef294a920f6bb361b317dba43c7ef29d96332b9b"
+    },
+    {
+      "path": "package.json",
+      "bytes": 1332,
+      "sha256": "f155461c1754af8b8cc3df3a232f1a109e961bea31d89981fcbc81740a0f42cd"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "bytes": 10813,
+      "sha256": "09a54d2d3257fd1356c504ba37dfbe80a52e403afd0a80ebde975610466747ff"
+    },
+    {
+      "path": "pnpm-workspace.yaml",
+      "bytes": 38,
+      "sha256": "ad8d9fe6ab5a7908c3c8e31af3c5119c566fc47c68d3ddc310a6dfd330fcf335"
+    },
+    {
+      "path": "README.md",
+      "bytes": 21613,
+      "sha256": "211738d64fb09f5399ed9ddda0adfe182e739d18de709c510148bb0e37c5d83d"
+    },
+    {
+      "path": "scripts/build-browser.ts",
+      "bytes": 2312,
+      "sha256": "4da9640f4824e834e528a66fc75ec1ea6211e8486e4932b5c0876295752eff6a"
+    },
+    {
+      "path": "scripts/build.ts",
+      "bytes": 649,
+      "sha256": "bbc6cb6535c54f5d0158e82992a3602d7a7c8c535a7350dcd74ec8ba8f46b7ef"
+    },
+    {
+      "path": "scripts/test-all-formats.ts",
+      "bytes": 3288,
+      "sha256": "a6cc97d86259a799f291062afaa44be7fc42df02ec4485fdb1a94ed7179373ee"
+    },
+    {
+      "path": "scripts/test.ts",
+      "bytes": 14058,
+      "sha256": "82fb5f36bc4b6491054f6b1b64b75adce34bcf756895faf74f57c895023ceb46"
+    },
+    {
+      "path": "scripts/timezone.ts",
+      "bytes": 5032,
+      "sha256": "c1e90d79cf6f9b8d09b0ba45de00cc6e08335c59dee609cb2f58e2823c5ffb31"
+    },
+    {
+      "path": "src/browser/EdgeTTS.browser.ts",
+      "bytes": 3487,
+      "sha256": "bcff81768f2dbc60eda78d66a9ce94b0dbae7c22cca23cbb2151f55dae663fbc"
+    },
+    {
+      "path": "src/cli/edge-tts.ts",
+      "bytes": 488,
+      "sha256": "fe82d40e26a64484892222d1357b5c5ab4696aa23132fa028618252375c64b8d"
+    },
+    {
+      "path": "src/commands/SynthesizeCommand.ts",
+      "bytes": 2266,
+      "sha256": "579bb38e15f94b1c84d64a7d0a65b1335f94eb1edd654fb9c5aa890b36a0caa8"
+    },
+    {
+      "path": "src/commands/VoiceListCommand.ts",
+      "bytes": 813,
+      "sha256": "469684c10ec4b33d1e1745f0ede63c729a5fc06bfabe1124228f8bb24e7a03d4"
+    },
+    {
+      "path": "src/config/constants.ts",
+      "bytes": 2226,
+      "sha256": "c94f7af4f1efc11575bbf9eb2d32a13d2bb13b686daa0c7e1487769c61d7c6a5"
+    },
+    {
+      "path": "src/core/base.ts",
+      "bytes": 9492,
+      "sha256": "8157de324b4267640d61dd5d6098d3e08f8e9842bcdeea03e8537edc638b589e"
+    },
+    {
+      "path": "src/core/clock.ts",
+      "bytes": 440,
+      "sha256": "cd7ad3e5be6942fede2cc98f2826c56bf8dd344548b95dae8e709efa6c607b25"
+    },
+    {
+      "path": "src/core/crypto.ts",
+      "bytes": 504,
+      "sha256": "89db00b0f5e3fcf5c5f6403cb7d3074ac5f56c85ed6df97c91950667ddfc8b3f"
+    },
+    {
+      "path": "src/core/errors.ts",
+      "bytes": 609,
+      "sha256": "13f45a94ee06572db0290025b15342462fe56bd10ec489a496b08b7b7c05fdbe"
+    },
+    {
+      "path": "src/core/protocol.ts",
+      "bytes": 8131,
+      "sha256": "7a66f689c48f4be7b51e9eca38001343f6262fc5a77987403d7b19610f99358a"
+    },
+    {
+      "path": "src/core/session.ts",
+      "bytes": 4515,
+      "sha256": "1ba9a70423bedf03e342b33e9e5c0fc225cf353faeb00c782672630530829ce2"
+    },
+    {
+      "path": "src/core/subtitles.ts",
+      "bytes": 976,
+      "sha256": "c8ad799e36aeb9e0376f60cfc7631f4fbed8199ddd599eaa1c386bde667f63e9"
+    },
+    {
+      "path": "src/core/types.ts",
+      "bytes": 1394,
+      "sha256": "f274ef2888e5321b4a37b4db34341ce13c1d81535bfc0d2dc1914c23330a1703"
+    },
+    {
+      "path": "src/index.ts",
+      "bytes": 367,
+      "sha256": "19d3978282ec32aafda3db45b4f0edbfe6ecfa78e63e58523a455bbcbfc9e88a"
+    },
+    {
+      "path": "src/services/EdgeTTS.ts",
+      "bytes": 9602,
+      "sha256": "17cbb9c610aff5f2d08ee1460674aabbe95ae6dad43746f4e8c7e6fa0cabc91c"
+    },
+    {
+      "path": "tests/compat.test.ts",
+      "bytes": 6977,
+      "sha256": "2d3294d1128d5b3abd2d545f08a3df6ebcf97fdce283bcd8d4aeb320e8ed45f7"
+    },
+    {
+      "path": "tests/EdgeTTS.test.ts",
+      "bytes": 3448,
+      "sha256": "42767f59958ee1638d20114ba5140b003693bfb4fe128cca5c0a4b563b81bf70"
+    },
+    {
+      "path": "tests/features.test.ts",
+      "bytes": 11344,
+      "sha256": "0cec9652a7709a8c9249fb7246e4a29f868acc6468ccf1854c179302e8b6bbb4"
+    },
+    {
+      "path": "tests/fixtures/session.json",
+      "bytes": 15583,
+      "sha256": "264f830535861c939058110405083d3afbf593fc9bad7e6783b807ea669599ee"
+    },
+    {
+      "path": "tests/helpers/fake-service.ts",
+      "bytes": 3643,
+      "sha256": "bcc11d8a25179af527147cb95d0a7a29cf82c8db5d2670a10a54d65da9fcefac"
+    },
+    {
+      "path": "tsconfig.json",
+      "bytes": 613,
+      "sha256": "d46383b8c82d00dd32b5fdc0e8ddc8f936c22ea44b9e78ab704d042950135b86"
+    }
+  ]
+}

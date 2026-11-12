@@ -10,6 +10,9 @@
 *.ps1 text eol=lf
 # Keep the pinned upstream bytes exact, including on Windows checkout.
 vendor/rack/** -text
+vendor/dsh-pet/** -text
+vendor/dsh-pet-source/** -text
+vendor/edge-tts-source/** -text
 *.exe binary
 *.png binary
 *.tgz binary

@@ -3,12 +3,13 @@ const {spawn}=require('node:child_process');
 const {send}=require('./control-pipe.cjs');
 const {createVisibilityBroker}=require('./visibility-broker.cjs');
 const {PetBridge,atomic}=require('./pet-bridge.cjs');
+const {scopeFromEnv}=require('./pet-window-scope.cjs');
 const fs=require('node:fs');const {randomUUID}=require('node:crypto');
 const OWNER='dsh-tableball';
 const ENTER='进入台球模式', EXIT='退出台球模式', SETTINGS='台球设置';
 class MenuController {
- constructor({base,electron,entry,env=process.env,launch=spawn,log=console.error,leaseFile,sendCommand=send,brokerFactory=createVisibilityBroker}) {
-  this.bridge=new PetBridge({base});this.electron=electron;this.entry=entry;
+ constructor({base,electron,entry,env=process.env,runtimeFile,fetchImpl,launch=spawn,log=console.error,leaseFile,sendCommand=send,brokerFactory=createVisibilityBroker}) {
+  this.bridge=new PetBridge({base,env,runtimeFile,fetchImpl});this.electron=electron;this.entry=entry;
   this.brokerFactory=brokerFactory;this.broker=null;this.brokerClosing=Promise.resolve();this.sendCommand=sendCommand;this.leaseFile=leaseFile;this.token=randomUUID();this.env=env;this.launch=launch;this.log=log;this.child=null;this.closed=false;this.running=false;
  }
  ownsLease(){if(!this.leaseFile)return true;try{return JSON.parse(fs.readFileSync(this.leaseFile,'utf8')).token===this.token;}catch{return false;}}
@@ -19,7 +20,8 @@ class MenuController {
  async start(pet){
   if(this.closed||this.child)return;
   this.controlPipe=process.platform==='win32'?'\\\\.\\pipe\\tableball-'+randomUUID():require('node:path').join(require('node:os').tmpdir(),'tableball-'+randomUUID()+'.sock');
-  await this.brokerClosing;const home=this.env.DSH_HOME||require('node:path').join(require('node:os').homedir(),'.dsh');this.broker=await this.brokerFactory({journal:require('node:path').join(home,'tableball/pet-window-restore.json'),expectedOwner:()=>this.child?.pid,log:this.log,onLost:()=>{if(this.child)void this.sendCommand(this.controlPipe,'exit').catch(this.log);}});
+  const scope=scopeFromEnv(this.env,pet);
+  await this.brokerClosing;const home=this.env.DSH_HOME||require('node:path').join(require('node:os').homedir(),'.dsh');this.broker=await this.brokerFactory({journal:require('node:path').join(home,'tableball/pet-window-restore.json'),expectedOwner:()=>this.child?.pid,log:this.log,onLost:()=>{if(this.child)void this.sendCommand(this.controlPipe,'exit').catch(this.log);},...(scope?{scope}:{})});
   const env={...this.env,TABLEBALL_PET_ID:pet,TABLEBALL_CONTROL_PIPE:this.controlPipe,TABLEBALL_VISIBILITY_BROKER:this.broker.pipe};delete env.ELECTRON_RUN_AS_NODE;
   const child=this.launch(this.electron,[this.entry],{env,windowsHide:true,stdio:'ignore'});this.child=child;
   child.stdin?.on('error',()=>{});

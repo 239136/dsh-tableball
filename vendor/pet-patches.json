@@ -1,0 +1,24 @@
+{
+  "modifications": [
+    {
+      "path": "vendor/dsh-pet/runtime/electron-helper/main.js",
+      "sha256": "dbb0c7a3ac70c03bd0f286e8d4dbf3557abcf5832b2267975fe46db221c108a7",
+      "reason": "Optional isolated profile and owned-pet window marker; original operation unchanged when opt-in env is absent."
+    },
+    {
+      "path": "vendor/dsh-pet/runtime/electron-helper/main/windows.js",
+      "sha256": "aa877d36669adcd2087e3990216b4900282edabe6f5825f2d2f62e4900cd9fe1",
+      "reason": "Optional isolated profile and owned-pet window marker; original operation unchanged when opt-in env is absent."
+    },
+    {
+      "path": "vendor/dsh-pet-source/dsh-pet/runtime/electron-helper/main.js",
+      "sha256": "dbb0c7a3ac70c03bd0f286e8d4dbf3557abcf5832b2267975fe46db221c108a7",
+      "reason": "Optional isolated profile and owned-pet window marker; original operation unchanged when opt-in env is absent."
+    },
+    {
+      "path": "vendor/dsh-pet-source/dsh-pet/runtime/electron-helper/main/windows.js",
+      "sha256": "aa877d36669adcd2087e3990216b4900282edabe6f5825f2d2f62e4900cd9fe1",
+      "reason": "Optional isolated profile and owned-pet window marker; original operation unchanged when opt-in env is absent."
+    }
+  ]
+}

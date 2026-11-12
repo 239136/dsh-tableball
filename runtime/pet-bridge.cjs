@@ -1,5 +1,6 @@
 'use strict';
 const fs=require('node:fs');const path=require('node:path');
+const {createPetFetch}=require('./pet-auth.cjs');
 function atomic(file,value){fs.mkdirSync(path.dirname(file),{recursive:true});const temp=file+'.tmp-'+process.pid;fs.writeFileSync(temp,JSON.stringify(value,null,2));fs.renameSync(temp,file);}
 function restore(journal,{retain=false}={}){
  if(!fs.existsSync(journal))return false;
@@ -12,10 +13,10 @@ function restore(journal,{retain=false}={}){
  atomic(j.file,current);if(retain)atomic(journal,{...j,phase:'restored'});else fs.unlinkSync(journal);return true;
 }
 class PetBridge{
- constructor({base,file,journal}){this.base=base;this.file=file;this.journal=journal;}
- async request(suffix,method='GET',body){const u=new URL(this.base);if(u.protocol!=='http:'||!['127.0.0.1','localhost','[::1]'].includes(u.hostname))throw Error('只允许本机桌宠 API');
-  const r=await fetch(this.base+suffix,{method,redirect:'error',headers:body?{'content-type':'application/json'}:{},body:body?JSON.stringify(body):undefined,signal:AbortSignal.timeout(4000)});
-  if(!r.ok)throw Error('桌宠 API HTTP '+r.status);const value=await r.json();if(value?.ok===false||value?.error)throw Error('桌宠拒绝操作：'+JSON.stringify(value));return value;}
+ constructor({base,file,journal,env=process.env,runtimeFile=env.TABLEBALL_PET_RUNTIME_FILE,fetchImpl}){this.base=base;this.file=file;this.journal=journal;this.protected=runtimeFile!==undefined;this.fetch=createPetFetch(base,{runtimeFile,env,fetchImpl});}
+ async request(suffix,method='GET',body){try{const u=new URL(this.base);if(u.protocol!=='http:'||!['127.0.0.1','localhost','[::1]'].includes(u.hostname))throw Error('只允许本机桌宠 API');
+  const r=await this.fetch(this.base+suffix,{method,redirect:'error',headers:body?{'content-type':'application/json'}:{},body:body?JSON.stringify(body):undefined,signal:AbortSignal.timeout(4000)});
+  if(!r.ok)throw Error('桌宠 API HTTP '+r.status);const value=await r.json();if(value?.ok===false||value?.error)throw Error('桌宠拒绝操作：'+JSON.stringify(value));return value;}catch(error){if(this.protected)throw Error('Protected pet API request failed');throw error;}}
  async reload(){return this.request('/reload','POST');}
  async flat(){
   if(fs.existsSync(this.journal))throw Error('已有配置恢复记录，请先恢复');

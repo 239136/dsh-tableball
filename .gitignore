@@ -2,6 +2,10 @@
 /.dsh/
 /.dshviz/
 /node_modules/
+**/node_modules/
+/dist/
+/build/
+/resources/runtime/
 .env
 .env.*
 **/.env

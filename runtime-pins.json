@@ -1,0 +1,14 @@
+{
+  "platform": "win32",
+  "arch": "x64",
+  "node": {
+    "version": "24.16.0",
+    "name": "node-v24.16.0-win-x64.zip",
+    "sha256": "edaca9bd58ec8e92037dac4e877d52f6b8f430b81c18b57e264b4e2fb111cd56"
+  },
+  "electron": {
+    "version": "43.3.0",
+    "name": "electron-v43.3.0-win32-x64.zip",
+    "sha256": "18528bedc6a9b04bdc5efb7b803cbc3cb0e5ea6415d54046e23d464d89a00da9"
+  }
+}
