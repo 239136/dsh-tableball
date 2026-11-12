@@ -1,0 +1,22 @@
+# Local harness/operator state and private credentials
+/.dsh/
+/.dshviz/
+/node_modules/
+.env
+.env.*
+**/.env
+**/.env.*
+*.log
+*.jsonl
+**/physics-restore.json
+**/pet-window-restore.json
+**/menu-owner.json
+**/menu-stop
+# Generated distribution archives (deliver separately, not source history)
+/*.tgz
+/*.sha256
+# Never upload captured real desktops. These three are synthetic/offscreen demos.
+/*.png
+!/lan-host-view.png
+!/lan-guest-view.png
+!/ball-material-preview.png

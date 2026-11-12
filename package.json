@@ -1,0 +1,26 @@
+{
+  "name": "dsh-tableball",
+  "version": "0.4.0",
+  "description": "桌宠桌面台球：独立透明覆盖层",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.cjs vendor/rack/web/tests/*.test.mjs",
+    "test:lan": "node --test test/rack-*.test.cjs test/viewport.test.cjs test/lan-settings.test.cjs vendor/rack/web/tests/*.test.mjs",
+    "test:lan:ui": "node scripts/rack-render-e2e.cjs && node scripts/rack-main-e2e.cjs && node scripts/rack-client-main-e2e.cjs",
+    "start": "node scripts/menu.cjs",
+    "play": "node scripts/launch.cjs",
+    "build": "node scripts/build-tracker.cjs && node scripts/build-desktop.cjs && node scripts/build-visibility.cjs"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "files": ["lib", "runtime", "runtime/bin/*.exe", "native", "scripts/**/*.cjs", "scripts/**/*.ps1", "test/*.test.cjs", "vendor/rack", "cordis.patch.yml", "README.md", "LAN-GUIDE.md", "LAN-REUSE.md", "THIRD_PARTY_NOTICES.md", "lan-host-view.png", "lan-guest-view.png", "ball-material-preview.png"],
+  "license": "MIT"
+}

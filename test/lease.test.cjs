@@ -1,0 +1,11 @@
+const {test}=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),os=require('node:os'),path=require('node:path'),{randomUUID}=require('node:crypto'),{spawn}=require('node:child_process');
+const {MenuController}=require('../runtime/menu-controller.cjs');
+const mk=()=>{const dir=fs.mkdtempSync(path.join(os.tmpdir(),'tableball-lease-'));return {dir,file:path.join(dir,'owner.json'),cleanup:()=>fs.rmSync(dir,{recursive:true,force:true})};};
+const ctl=(file,token)=>{const c=new MenuController({base:'http://127.0.0.1:1/pet',electron:'e',entry:'m',leaseFile:file,launch:()=>({once(){},on(){}}),log:()=>{}});c.token=token;return c;};
+test('live foreign owner makes a second controller stand by instead of competing',async t=>{const {dir,file,cleanup}=mk();const other=spawn(process.execPath,['-e','setTimeout(()=>{},30000)']);t.after(()=>{other.kill();cleanup();});
+ try{await new Promise(r=>other.once('spawn',r));const b=ctl(file,randomUUID());b.bridge.request=async()=>{throw Error('must not register while standing by')};
+ fs.writeFileSync(file,JSON.stringify({pid:other.pid,token:'foreign'}));
+ await b.run();assert.equal(b.closed,true);assert.equal(b.running,false);
+ }finally{other.kill();cleanup();}});
+test('stale owner pid does not block takeover after a crash',()=>{const {dir,file,cleanup}=mk();try{fs.writeFileSync(file,JSON.stringify({pid:999999,token:'dead'}));const c=ctl(file,randomUUID());assert.equal(c.foreignOwner(),false);assert.equal(c.ownsLease(),false);}finally{cleanup();}});
+test('missing lease file is treated as free and never throws',()=>{const {dir,file,cleanup}=mk();try{const c=ctl(file,randomUUID());assert.equal(c.foreignOwner(),false);}finally{cleanup();}});

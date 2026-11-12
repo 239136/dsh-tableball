@@ -1,0 +1,2 @@
+const {test}=require('node:test');const assert=require('node:assert/strict');const {PhysicsEngine}=require('../runtime/physics.cjs');
+test('large desktop pet can enter a pocket even when its center cannot reach the screen edge',()=>{const g=new PhysicsEngine();g.score=50;g.step(.016,{x:960,y:200,radius:86});const events=g.step(.1,{x:960,y:86,radius:86});assert.ok(events.some(e=>e.type==='scratch'));assert.equal(g.score,30);});

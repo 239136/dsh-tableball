@@ -1,0 +1,71 @@
+{
+  "repository": "https://github.com/Nick7612/rack",
+  "commit": "6383542887caa822296c883e72391adba86ca82c",
+  "license": "MIT",
+  "files": [
+    {
+      "path": "LICENSE",
+      "sha256": "ea5fcb1d8641f79c23c81c6bc142c629a4485115b202bd70d6ba8207ca0a1dd3"
+    },
+    {
+      "path": "web/js/game.js",
+      "sha256": "a8d2b5f86b2c22c86fb0bf673b70370b1700ea30630509045f374f957aaf7bb9"
+    },
+    {
+      "path": "web/js/physics.js",
+      "sha256": "54277227d63073d1d003f50e6d12fe681f929d8552632e52db764e480b47be9b"
+    },
+    {
+      "path": "web/js/aim.js",
+      "sha256": "575cb3b6e69870ef3cbba58f3fd96ed1fdbea4ed47d2cd63942954a78b04c748"
+    },
+    {
+      "path": "web/js/room.js",
+      "sha256": "7d695ef477dbffd9604ce5c5b0f8f9a8dfbe5084a60b10ee9ba8d55864ef28f2"
+    },
+    {
+      "path": "web/js/net.js",
+      "sha256": "1117c8a408147b2f1619238c62a8f8ed8a9c82624524077d1ce86cb15c4708af"
+    },
+    {
+      "path": "web/tests/game.test.mjs",
+      "sha256": "89a71bdb37abf973eb82225cea99f393ee9fc494ebdc0c170282fae566cfd4f1"
+    },
+    {
+      "path": "web/tests/aim.test.mjs",
+      "sha256": "64e19f6664d3648efa95f170647a214e94b88fbcf7be57b95b6ec9fbbf701b97"
+    },
+    {
+      "path": "web/tests/room.test.mjs",
+      "sha256": "64d28f96aff5972ef7f69cee7b9dbf0f840c24ecc6d81a8f79b136834fec88ea"
+    },
+    {
+      "path": "src/hostserver.cpp",
+      "sha256": "8ed9e02f3235c5bd7a0eed3223bab5ef7eb972e4b82288cfa30c615560640956"
+    },
+    {
+      "path": "src/hostserver.h",
+      "sha256": "3f7e2885b6bc98737143a5f78fea6f091e93ed717ff30642435bf13d2dc7c448"
+    },
+    {
+      "path": "src/gameclient.cpp",
+      "sha256": "c9f2158d9305191d8b9a8685ed48a93d3875b4a5225ebac4a2702ad4430453be"
+    },
+    {
+      "path": "src/gameclient.h",
+      "sha256": "bd44be20211d625e781d76a15b630c720a3fc3120342ef49ba329a9c9e346f86"
+    },
+    {
+      "path": "src/protocol.cpp",
+      "sha256": "9eba583296629adacba3f27ba17e5e181aa00629eb223fa47b3515379a59a616"
+    },
+    {
+      "path": "src/protocol.h",
+      "sha256": "4f4306767d9bc171e5aa27c11c7691c78c98bcefee538e5bc85419cd192fc1e5"
+    },
+    {
+      "path": "docs/PROTOCOL.md",
+      "sha256": "40eed0686d7b4fb67219b624e7f37a7bf8fe5c4fe37262fa7a06a87615bcf8c2"
+    }
+  ]
+}

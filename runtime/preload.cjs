@@ -1,0 +1,19 @@
+const {contextBridge,ipcRenderer}=require('electron');
+contextBridge.exposeInMainWorld('tableball',{
+ onShutdown:fn=>ipcRenderer.on('stop-skin',fn),
+ onSkin:fn=>ipcRenderer.on('skin',(_e,skin)=>fn(skin)),
+ skinReady:info=>ipcRenderer.send('skin-ready',info),
+ onState:fn=>ipcRenderer.on('state',(_e,s)=>fn(s)),
+ onEffect:fn=>ipcRenderer.on('effect',(_e,e)=>fn(e)),
+ onAssets:fn=>ipcRenderer.on('assets',(_e,assets)=>fn(assets)),
+ input:payload=>ipcRenderer.send('cue-input',payload),
+ contextMenu:()=>ipcRenderer.send('cue-menu'),
+ onMenu:fn=>ipcRenderer.on('popup-menu',(_e,data)=>fn(data)),
+ onMenuDismiss:fn=>ipcRenderer.on('dismiss-menu',fn),
+ onSceneVisible:fn=>ipcRenderer.on('scene-visible',(_e,visible)=>fn(visible)),
+ closeMenu:()=>ipcRenderer.send('popup-dismiss'),
+ menuAction:id=>ipcRenderer.send('popup-command',id),
+ ready:()=>ipcRenderer.send('ready'),
+ event:e=>ipcRenderer.send('game-event',e),
+ command:(cmd,value)=>ipcRenderer.invoke('command',cmd,value),
+});

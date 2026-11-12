@@ -1,0 +1,5 @@
+(function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.TableBallSkin=api;})(typeof globalThis!=='undefined'?globalThis:this,function(){
+ function alphaBounds(data,width,height,threshold=8){if(!Number.isInteger(width)||!Number.isInteger(height)||width<=0||height<=0||data.length!==width*height*4)throw Error('Invalid skin frame');let x0=width,y0=height,x1=-1,y1=-1;for(let y=0;y<height;y++)for(let x=0;x<width;x++){const i=(y*width+x)*4+3;if(data[i]<=threshold){data[i]=0;continue;}if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y;}return x1<0?null:{x:x0,y:y0,width:x1-x0+1,height:y1-y0+1};}
+ function fitSkin(bounds,cue){if(!bounds||![bounds.x,bounds.y,bounds.width,bounds.height,cue.x,cue.y,cue.radius].every(Number.isFinite)||bounds.width<=0||bounds.height<=0||cue.radius<=0)return null;const scale=cue.radius*1.92/Math.hypot(bounds.width,bounds.height);const width=bounds.width*scale,height=bounds.height*scale;return {sx:bounds.x,sy:bounds.y,sw:bounds.width,sh:bounds.height,x:cue.x-width/2,y:cue.y-height/2,width,height,cx:cue.x,cy:cue.y,radius:cue.radius};}
+ return {alphaBounds,fitSkin};
+});

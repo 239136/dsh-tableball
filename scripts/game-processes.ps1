@@ -1,0 +1,1 @@
+Get-CimInstance Win32_Process | Where-Object { $_.Name -eq 'electron.exe' -and $_.CommandLine -like '*tableball*runtime*main.cjs*' } | Select-Object ProcessId,ParentProcessId,CommandLine | ConvertTo-Json -Compress

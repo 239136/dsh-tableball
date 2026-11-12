@@ -1,0 +1,1 @@
+const {app,screen}=require('electron');app.commandLine.appendSwitch('force-device-scale-factor','1');app.whenReady().then(()=>{console.log('TABLEBALL_DISPLAYS='+JSON.stringify(screen.getAllDisplays()));app.exit(0);});

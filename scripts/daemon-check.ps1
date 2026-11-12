@@ -1,0 +1,2 @@
+$owners = @(Get-CimInstance Win32_Process | Where-Object { $_.Name -eq "node.exe" -and ($_.CommandLine -like "*menu-daemon.cjs*" -or $_.CommandLine -like "*scripts*menu.cjs*") })
+if ($owners.Count -eq 0) { Write-Output "NONE" } else { $owners | ForEach-Object { Write-Output ($_.ProcessId.ToString() + " " + $_.CommandLine) } }
