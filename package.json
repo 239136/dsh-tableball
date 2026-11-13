@@ -1,6 +1,6 @@
 {
   "name": "dsh-tableball",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "桌宠桌面台球：独立透明覆盖层",
   "type": "module",
   "main": "lib/index.js",
@@ -17,7 +17,8 @@
     "build": "node scripts/build-tracker.cjs && node scripts/build-desktop.cjs && node scripts/build-visibility.cjs",
     "prepare:standalone": "node scripts/prepare-runtimes.cjs && node scripts/verify-runtime-cache.cjs && npm install --omit=dev --ignore-scripts --legacy-peer-deps --install-links && node scripts/prepare-owned-native.cjs",
     "pack:standalone": "node scripts/build-unified.cjs",
-    "test:standalone": "node scripts/unified-smoke.cjs"
+    "test:standalone": "node scripts/unified-smoke.cjs",
+    "build:patch": "node scripts/build-scratch-patch.cjs"
   },
   "dsh": {
     "bundle": {
@@ -57,7 +58,8 @@
     "SBOM.json",
     "LICENSE-CODE-MIT.txt",
     "DEPENDENCY-INTEGRATION-AUDIT.md",
-    "runtime-files.json"
+    "runtime-files.json",
+    "PATCH-0.5.1.md"
   ],
   "dependencies": {
     "dsh-pet": "file:vendor/dsh-pet",

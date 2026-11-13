@@ -47,8 +47,9 @@ function currentEscapeAction(){return escapeAction({enabled:settings.escapeExit,
 function syncEscapeKey(){const action=currentEscapeAction();if(action==='none'){globalShortcut.unregister('Escape');return;}if(!globalShortcut.isRegistered('Escape'))globalShortcut.register('Escape',()=>{const now=currentEscapeAction();if(now==='quit'){if(quitting)return;quitting=true;overlay?.setIgnoreMouseEvents(true,{forward:true});overlay?.hide();app.quit();}else if(now==='menu')dismissGameMenu();else if(now==='cancel'){cueController.cancel();drag=null;placing=false;inputPolicy.reset();refreshInteraction();}});}
 function refreshInteraction(sample=true){
  if(!overlay||overlay.isDestroyed()||!game||!work)return;if(sample){const p=screen.getCursorScreenPoint();pointer={x:p.x-work.x,y:p.y-work.y};pointer=toWorld(fit(lan?{width:1600,height:800}:(game.table||work),work),pointer);}
- const before=cueController.snapshot(game.cue);interaction=inputPolicy.evaluate({cue:game.cue,aim:before,pointer,canShoot:game.canShoot,mode:lan?'cue':settings.controlMode,policy:settings.inputMode,paused,closing:quitting||!running,transition,desktopPass,charging:before.charging,dragging:!!drag,placing,menu:menuGuard.active});
- if(appliedCapture!==interaction.capture)inputEpoch++;interaction.token=inputEpoch;
+ if(lan&&!lan.canShoot){cueController.cancel();drag=null;}if(lan&&placing&&!lan.canPlace){placing=false;inputPolicy.reset();}
+ const priorPlacement=interaction.reason==='placement';const before=cueController.snapshot(game.cue);interaction=inputPolicy.evaluate({cue:game.cue,aim:before,pointer,canShoot:game.canShoot,canPlace:!!lan?.canPlace,mode:lan?'cue':settings.controlMode,policy:settings.inputMode,paused,closing:quitting||!running,transition,desktopPass,charging:before.charging,dragging:!!drag,placing,menu:menuGuard.active});
+ if(appliedCapture!==interaction.capture||priorPlacement!==(interaction.reason==='placement'))inputEpoch++;interaction.token=inputEpoch;
  if(interaction.aim&&!placing)cueController.move(pointer.x,pointer.y);
  if(appliedCapture!==interaction.capture){appliedCapture=interaction.capture;if(interaction.capture)overlay.setIgnoreMouseEvents(false);else overlay.setIgnoreMouseEvents(true,{forward:true});}
  syncEscapeKey();
@@ -66,7 +67,7 @@ async function command(cmd,value){if(quitting)throw Error('正在退出');if(!ru
  else if(cmd==='lan-rematch'){if(!lan)throw Error('未加入房间');if(lan.role==='host')lan.start();else lan.transport.send({t:'rematch'});}
  else if(cmd==='pause'){paused=!paused;drag=null;placing=false;inputPolicy.reset();cueController.cancel();overlay.setOpacity(paused&&!menuGuard.active?0:1);syncInputMode();menu();}
  else if(cmd==='desktop'){desktopPass=!desktopPass;placing=false;drag=null;cueController.cancel();inputPolicy.reset();syncInputMode();menu();}
- else if(cmd==='place'){if(lan&&!lan.canPlace)throw Error('当前不是你的摆球回合');if(!game.cue.pocketed)throw Error('母球尚未落袋');desktopPass=false;placing=true;syncInputMode();}
+ else if(cmd==='place'){if(lan){if(!lan.canPlace)throw Error('当前不是你的摆球回合');}else if(!game.cue.pocketed)throw Error('母球尚未落袋');desktopPass=false;placing=true;syncInputMode();}
  else if(cmd==='reset'){overlay.webContents.send('effect',{type:'restore'});game.resetRound();shots=0;drag=null;placing=false;inputPolicy.reset();cueController.cancel();}
  else if(cmd==='debug'){settings.debug=!settings.debug;atomic(settingsFile,settings);}
  else if(cmd==='mode'){if(lan)throw Error('联机采用Rack固定物理，单机设置已保留');mode=mode==='重力甩抛'?'俯视无重力':'重力甩抛';game.gravity=mode==='重力甩抛'?1200:0;menu();}
@@ -83,8 +84,9 @@ async function command(cmd,value){if(quitting)throw Error('正在退出');if(!ru
 function tick(){const now=performance.now(),dt=Math.min(.1,(now-previousTick)/1000);previousTick=now;frame++;if(lan){lan.tick(dt);}else if(!paused&&!menuGuard.active&&!transition&&!drag){for(const event of game.step(dt)){overlay.webContents.send('effect',event);if(event.type==='pocket'){stats.total+=event.points;stats.best=Math.max(stats.best,game.roundScore);}if(event.type==='scratch')stats.total=Math.max(0,stats.total-event.penalty);if(event.type==='clear')stats.rounds++;if(['pocket','scratch','clear'].includes(event.type))atomic(statsFile,stats);}}refreshInteraction();if(lan){const a=cueController.snapshot(game.cue);lan.aim(a.dx,a.dy,a.charge,a.charging);}send();}
 function onInput(payload){
  if(!running||paused||menuGuard.active||transition||quitting)return;const action=payload?.action;if(action==='down'&&(!interaction.capture||payload.token!==interaction.token))return;if(action==='cancel'){cueController.cancel();drag=null;refreshInteraction();return;}
- const x=payload?.x,y=payload?.y;if(!Number.isFinite(x)||!Number.isFinite(y))return;pointer={x,y};refreshInteraction(false);if(desktopPass||!interaction.capture)return;
- if(placing){if(action==='down'&&game.placeCue(x,y))placing=false;refreshInteraction(false);return;}
+ const x=payload?.x,y=payload?.y;if(!Number.isFinite(x)||!Number.isFinite(y))return;pointer={x,y};refreshInteraction(false);if(desktopPass||!interaction.capture||(action==='down'&&payload.token!==interaction.token))return;
+ if(placing){if(action==='down'){if(game.placeCue(x,y)){placing=false;error='';cueController.cancel();inputPolicy.reset();inputEpoch++;}else error='此处不能摆白球，请选桌内未被占用的位置';}refreshInteraction(false);return;}
+ if(lan?.canPlace){const c=game.cue;if(action==='down'&&Math.hypot(x-c.x,y-c.y)<=c.radius+7){if(game.placeCue(c.x,c.y)){error='';cueController.cancel();drag=null;inputPolicy.reset();inputEpoch++;}else error='此处不能摆白球，请右键选择手动摆母球换位置';}refreshInteraction(false);return;}
  if(game.cue.pocketed)return;
  if(lan||settings.controlMode==='cue'){
   if(action==='down'&&game.canShoot)cueController.begin(game.cue);

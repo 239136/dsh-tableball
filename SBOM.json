@@ -1,6 +1,6 @@
 {
   "format": "TableBall production components",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "packages": [
     {
       "path": "node_modules/@andresaya/edge-tts",

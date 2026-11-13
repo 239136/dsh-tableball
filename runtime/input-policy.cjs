@@ -11,6 +11,7 @@
    if(s.closing){this.reset();return result(false,'inactive');}
    if(s.menu){this.reset();return result(true,'menu',false,true);}
    if(s.paused||s.closing||s.transition||s.desktopPass){this.reset();return result(false,s.desktopPass?'desktop':'inactive');}
+   if(s.canPlace&&!s.placing){this.reset();const target=hit(s.cue?{...s.cue,pocketed:false}:null,null,s.pointer,'throw');return target?result(true,'placement',false,true):result(false,'applications');}
    if(s.charging||s.dragging||s.placing)return result(true,'gesture',true,true);
    if(s.policy==='focus')return result(true,'focus',true,false);
    if(!s.canShoot||!s.cue||s.cue.pocketed){this.reset();return result(false,'rolling');}

@@ -70,8 +70,8 @@ function cueLabel(s,aim,rod,{name,color,active,player}){
  ctx.restore();
 }
 function cueAndStick(s){
- if(!s.cue||s.cue.pocketed)return;
- const c=s.cue,lan=s.lan;drawPet(c); // One physical mother ball, using this device's own pet skin.
+ if(!s.cue||(s.cue.pocketed&&!s.cue.placementPreview))return;
+ const c=s.cue,lan=s.lan;if(c.placementPreview){ctx.save();ctx.globalAlpha=.82;drawPet(c);ctx.restore();ctx.save();ctx.setLineDash([6,5]);ctx.lineWidth=2;circle(c.x,c.y,c.radius+5,null,s.localCanPlace?'#ffe59a':'#a8c9db');ctx.restore();return;}drawPet(c); // One physical mother ball, using this device's own pet skin.
  if(lan&&s.canShoot){
   const cues=[0,1].map(player=>{
    const synced=lan.aims?.find(aim=>aim.player===player);if(!synced)return null;
@@ -94,6 +94,7 @@ function lanStatus(lan){
  else if(lan.phase==='disconnected')status='连接已断开 · 等待重新连接';
  else if(!lan.connected)status=lan.phase==='lobby'?'等待对手连接':'连接已断开 · 对局已暂停';
  else if(lan.phase==='lobby')status=lan.ready.every(Boolean)?'双方已准备 · 等待开局':'等待双方准备';
+ else if(lan.ballInHand)status=lan.localPlayer===lan.current?'自由球 · 轮到你摆白球：点白球确认，右键→手动摆母球换位置':'当前回合：'+name(lan.current)+' · 等待对手摆白球';
  else status='当前回合：'+name(lan.current)+(lan.localPlayer===lan.current?' · 轮到你击球':' · 等待对手击球');
  if(!lan.connected&&lan.phase==='finished')status+=' · 连接已断开';
  return status;
@@ -104,7 +105,7 @@ function onlineHUD(s){
  const names=lan.names.map((name,player)=>(player===0?'房主：':'客人：')+Array.from(String(name)).slice(0,18).join('')+' · '+(lan.ready[player]?'已准备':'未准备')+(lan.phase==='playing'&&lan.current===player?' · 当前回合':''));
  ctx.textAlign='left';ctx.font='bold 14px sans-serif';
  for(let player=0;player<2;player++){ctx.fillStyle=lan.aims?.find(aim=>aim.player===player)?.color||(player===0?'#68dcb8':'#8fbdff');ctx.fillText(names[player],x+16+player*hw/2,y+46,hw/2-30);}
- ctx.font='12px sans-serif';ctx.fillStyle=!lan.connected||lan.phase==='disconnected'?'#ffb1a4':'#abc3cc';ctx.fillText([lanStatus(lan),lan.message,s.error].filter(Boolean).join(' · ').slice(0,140),x+16,y+72,hw-32);ctx.restore();
+ ctx.font='12px sans-serif';ctx.fillStyle=!lan.connected||lan.phase==='disconnected'?'#ffb1a4':'#abc3cc';ctx.fillText([lanStatus(lan),s.placing&&s.localCanPlace?'在桌内空位点击放置':'',lan.message,s.error].filter(Boolean).join(' · ').slice(0,140),x+16,y+72,hw-32);ctx.restore();
 }
 function offlineHUD(s){
  const w=s.table.width,left=s.table.x||0,top=s.table.y||0;ctx.fillStyle='rgba(8,19,29,.92)';const hw=580;ctx.fillRect(left+(w-hw)/2,top+42,hw,58);ctx.textBaseline='middle';ctx.textAlign='left';ctx.font='bold 18px sans-serif';ctx.fillStyle='#69e8bd';ctx.fillText('TABLEBALL',left+w/2-270,top+62);ctx.font='14px sans-serif';ctx.fillStyle='#e5f0f6';ctx.fillText('本局 '+s.roundScore+'  ·  剩余 '+s.remaining+'/'+s.totalBalls+'  ·  '+s.combo+' 连击  ·  '+s.shots+' 杆',left+w/2-125,top+62);ctx.font='12px sans-serif';ctx.fillStyle=s.error?'#ffb1a4':'#abc3cc';ctx.fillText((s.error||((s.settings.controlMode==='cue'?'统一母球 / 球杆':'统一母球 / 拖动')+' / '+(s.settings.ballMode==='folders'?'文件夹视觉副本（原文件不动）':'常规台球')+' / '+(s.interaction?.desktopPass?'完全穿透，游戏不停':s.settings.inputMode==='focus'?'专注击球':'桌面优先')+' / Ctrl+Alt+D 穿透'+(s.settings.escapeExit?' / Esc退出':''))).slice(0,80),left+w/2-270,top+84);
